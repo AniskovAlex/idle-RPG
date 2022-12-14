@@ -6,16 +6,26 @@ public class Idel : MonoBehaviour
 {
     [SerializeField] Projectaile projectaile;
     [SerializeField] GameObject field;
+    [SerializeField] MoneyController moneyController;
+    [SerializeField] float maxHealth = 10;
     [SerializeField] float shootDelay = 1f;
+    [SerializeField] float damageAttack = 1f;
     float timer = 0;
 
+    GameManager manager;
     bool isShooting = false;
     Transform target;
+    HpController hp;
     List<Enemy> enemies = new List<Enemy>();
 
     private void Start()
     {
+        manager = FindObjectOfType<GameManager>();
         GlobaleStatus.enemyDestroyed += StopShoot;
+        GlobaleStatus.enemyDestroyed += TakeMoney;
+        hp = GetComponentInChildren<HpController>();
+        if (hp != null)
+            hp.SetMaxHealth(maxHealth);
     }
 
     public void StartShoot(Enemy target)
@@ -24,7 +34,7 @@ public class Idel : MonoBehaviour
             this.target = target.transform;
         enemies.Add(target);
         isShooting = true;
-        timer = shootDelay;
+        timer = 0;
     }
 
     public void StopShoot(Enemy target)
@@ -41,6 +51,17 @@ public class Idel : MonoBehaviour
         GlobaleStatus.switchState();
     }
 
+    public void TakeDamage(float damage)
+    {
+        if (hp != null && hp.TakeDamage(damage) && manager != null)
+            manager.ResetGame();
+    }
+
+    public void TakeMoney(Enemy enemy)
+    {
+        moneyController.AddMoney(enemy.GetMoney());
+    }
+
     private void Update()
     {
         if (target == null) return;
@@ -53,8 +74,17 @@ public class Idel : MonoBehaviour
         else
             newProjectail = Instantiate(projectaile);
         newProjectail.target = target;
-        newProjectail.Launch();
+        newProjectail.Launch(damageAttack);
         timer = shootDelay;
 
+    }
+
+    public void AddDamage(float prog)
+    {
+        damageAttack *= prog;
+    }
+    public void AddSpeed(float prog)
+    {
+        shootDelay /= prog;
     }
 }

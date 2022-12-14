@@ -7,6 +7,7 @@ public class Projectaile : MonoBehaviour
     [SerializeField] float speed = 1;
     [SerializeField] float turnSpeed = 0.1f;
     [SerializeField] float damage = 2f;
+    [SerializeField] ParticleSystem particle;
     float deathTimer = 0.2f;
     public Transform target;
 
@@ -19,6 +20,15 @@ public class Projectaile : MonoBehaviour
         if (target != null)
             transform.LookAt(target.position);
         transform.Rotate(new Vector3(0, Random.Range(-80, 80), Random.Range(-20, 80)));
+        //particle.Play();
+    }
+    public void Launch(float damage)
+    {
+        this.damage = damage;
+        if (target != null)
+            transform.LookAt(target.position);
+        transform.Rotate(new Vector3(0, Random.Range(-80, 80), Random.Range(-20, 80)));
+        //particle.Play();
     }
 
     // Update is called once per frame

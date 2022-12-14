@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlanePiece : MonoBehaviour
 {
-    float speed = 1;
+    float speed;
     PlaneController controller;
     private void Start()
     {

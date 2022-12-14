@@ -7,11 +7,12 @@ public class RangeTrigger : MonoBehaviour
     Idel idel;
     private void Start()
     {
-        idel = GetComponent<Idel>();
+        idel = GetComponentInParent<Idel>();
     }
 
     private void OnTriggerEnter(Collider other)
     {
+        if (idel == null) return;
         Enemy enemy;
         if (other.TryGetComponent(out enemy))
         {

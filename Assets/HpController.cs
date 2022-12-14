@@ -12,18 +12,18 @@ public class HpController : MonoBehaviour
     float barPerHp;
     RectTransform healthBar;
 
-    private void Start()
+    private void Awake()
     {
         healthBar = currentHpObj.GetComponent<RectTransform>();
         if (healthBar == null) return;
         maxWidth = healthBar.sizeDelta.x;
-        barPerHp = maxWidth / maxHealth;
     }
 
     public void SetMaxHealth(float hp)
     {
         maxHealth = hp;
         currentHp = maxHealth;
+        barPerHp = maxWidth / maxHealth;
     }
 
     public bool TakeDamage(float damage)
